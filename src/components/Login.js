@@ -4,18 +4,14 @@ import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
 const SIGNUP_MUTATION = gql`
-  mutation SignupMutation($email: String!, $password: String!, $name: String!) {
-    signup(email: $email, password: $password, name: $name) {
-      token
-    }
+  mutation SignupMutation($email: String!, $password: String!, $username: String!) {
+    signup (username: $username, email: $email, password: $password)
   }
 `
 
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      token
-    }
+    login(email: $email, password: $password)
   }
 `
 
@@ -24,21 +20,21 @@ class Login extends Component {
     login: true, // switch between Login and SignUp
     email: '',
     password: '',
-    name: '',
+    username: '',
   }
 
   render() {
-    const { login, email, password, name } = this.state
+    const { login, email, password, username } = this.state
     return (
       <div>
         <h4 className="mv3">{login ? 'Login' : 'Sign Up'}</h4>
         <div className="flex flex-column">
           {!login && (
             <input
-              value={name}
-              onChange={e => this.setState({ name: e.target.value })}
+              value={username}
+              onChange={e => this.setState({ username: e.target.value })}
               type="text"
-              placeholder="Your name"
+              placeholder="Your username"
             />
           )}
           <input
@@ -57,7 +53,7 @@ class Login extends Component {
         <div className="flex mt3">
           <Mutation
             mutation={login ? LOGIN_MUTATION : SIGNUP_MUTATION}
-            variables={{ email, password, name }}
+            variables={{ email, password, username }}
             onCompleted={data => this._confirm(data)}
           >
             {mutation => (
@@ -78,9 +74,9 @@ class Login extends Component {
   }
 
   _confirm = async data => {
-    const { token } = this.state.login ? data.login : data.signup
+    const token = this.state.login ? data.login : data.signup
     this._saveUserData(token)
-    this.props.history.push(`/`)
+    this.props.history.push(`/commands`)
   }
 
   _saveUserData = token => {

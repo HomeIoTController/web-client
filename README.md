@@ -1,78 +1,33 @@
-# React & Apollo Tutorial
+# Light Control - Web app
 
-This is the sample project that belongs to the [React & Apollo Tutorial](https://www.howtographql.com/react-apollo/0-introduction/) on How to GraphQL.
+This is a web interface that communicated with a [GraphQL API](https://github.com/danielmapar/AdaptiveSoftwareDevelopment/tree/master/Project/api)
 
 ## Running the App
 
-### 1. Clone repository
-
 ```sh
-git clone https://github.com/howtographql/react-apollo/
+npm install
+npm run start
 ```
 
-### 2. Install dependencies & Deploy the Prisma database API
+You can now open your browser and use the app on `http://localhost:3001`.
 
-```sh
-cd react-apollo/server
-yarn install
-yarn prisma deploy
-```
+## List of available commands
 
-When prompted where (i.e. to which _Prisma server_) you want to deploy your service, choose the **Demo server** which can be used for free in Prisma Cloud. If you haven't done so already, you will be asked to register with Prisma Cloud (which you can do via GitHub). For the following prompts in the terminal you can select the suggested values by hitting **Enter**. (If you have Docker installed, you can also choose to deploy Prisma locally by _Creating a new database_.)
+The following Light state is available:
 
-### 3. Set the Prisma API endpoint
-
-The `prisma deploy` command wrote the endpoint property into `server/database/prisma.yml`. Copy it from there and paste it into `server/src/index.js` where it's used to instantiate the `Prisma` binding. You need to replace the current placeholder `__PRISMA_ENDPOINT__`:
-
-```js
-const server = new GraphQLServer({
-  typeDefs: './src/schema.graphql',
-  resolvers,
-  context: req => ({
-    ...req,
-    db: new Prisma({
-      typeDefs: 'src/generated/prisma.graphql',
-      endpoint: '__PRISMA_ENDPOINT__',
-      secret: 'mysecret123',
-    }),
-  }),
-})
-```
-
-For example:
-
-```js
-const server = new GraphQLServer({
-  typeDefs: './src/schema.graphql',
-  resolvers,
-  context: req => ({
-    ...req,
-    db: new Prisma({
-      typeDefs: 'src/generated/prisma.graphql',
-      endpoint: 'https://eu1.prisma.sh/john-doe/hackernews-graphql-js/dev',
-      secret: 'mysecret123',
-    }),
-  }),
-})
-```
-
-### 4. Start the server
-
-To start the server, all you need to do is execute the `start` script by running the following command inside the `server` directory:
-
-```sh
-yarn start
-```
-
-> **Note**: If you want to interact with the GraphQL APIs inside a [GraphQL Playground](https://github.com/graphcool/graphql-playground), you can also run `yarn dev`.
-
-### 5. Run the app
-
-Now that the server is running, you can start the app as well. The commands need to be run in a new terminal tab/window inside the root directory `react-apollo` (because the current tab is blocked by the process running the server):
-
-```sh
-yarn install
-yarn start
-```
-
-You can now open your browser and use the app on `http://localhost:3000`.
+* `on` - true if the light is on, false if not, configurable
+* `reachable` - true if the light can be communicated with, false if not
+* `brightness` - Configurable brightness of the light (value from 0 to 254)
+* `colorMode` - Color mode light is respecting (e.g. ct, xy, hs)
+* `hue` - Configurable hue of the light (value from 0 to 65535)
+* `saturation` - Configurable saturation of the light, compliments hue (value from 0 to 254)
+* `xy` - Configurable CIE x and y coordinates (value is an array containing x and y values)
+* `colorTemp` - Configurable Mired Color temperature of the light (value from 153 to 500)
+* `transitionTime` - Configurable temporary value which eases transition of an effect (value in seconds, 0 for instant, 5 for five seconds)
+* `alert` - Configurable alert effect (e.g. none, select, lselect)
+* `effect` - Configurable effect (e.g. none, colorloop)
+* `incrementBrightness` - Increment or decrement brightness value
+* `incrementHue` - Increment or decrement hue value
+* `incrementSaturation` - Increment or decrement saturation value
+* `incrementXy` - Increment or decrement xy values
+* `incrementColorTemp` - Increment or decrement color temperature value
