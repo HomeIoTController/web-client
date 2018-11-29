@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import Command from './Command'
-import Header from './Header'
 import { Switch, Route, Redirect } from 'react-router-dom'
+import Command from './Command'
+import SendCommand from './SendCommand'
+import Header from './Header'
 import Login from './Login'
 
 class App extends Component {
@@ -13,6 +14,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" render={() => <Redirect to="/login" />} />
             <Route exact path="/commands" component={Command} />
+            <Route exact path="/sendCommand" component={SendCommand} />
             <Route exact path="/login" component={Login} />
           </Switch>
         </div>

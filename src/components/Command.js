@@ -62,10 +62,12 @@ class Command extends Component {
 
     Promise.all([
       this.props.client.query({
-        query: COMMANDS_QUERY
+        query: COMMANDS_QUERY,
+        fetchPolicy: 'no-cache',
       }),
       this.props.client.query({
-        query: USER_QUERY
+        query: USER_QUERY,
+        fetchPolicy: 'no-cache',
       }),
     ]).then(data => {
 
@@ -215,8 +217,9 @@ class Command extends Component {
                 valueTo,
                 valuesTo
               })}
-
-              <a target="_blank" href="https://github.com/sqmk/huejay#clientgroupsgetall---get-all-groups">
+              <a href="https://github.com/sqmk/huejay#clientgroupsgetall---get-all-groups"
+                target="_blank" // eslint-disable-line react/jsx-no-target-blank
+              >
                 Philips HUE command:
               </a><input
                 className="mb2"
@@ -242,12 +245,12 @@ class Command extends Component {
             </span>);
             })}
 
-            <button onClick={this.addCommand.bind(this)}>Add command</button>
+            <button onClick={this.addCommand.bind(this)}>Add Command</button>
 
             <Mutation
               mutation={COMMANDS_MUTATION}
               variables={{ froms, tos, types, valuesFrom, valuesTo, listenerCommand }}
-              onCompleted={() => this.props.history.push('/commands')}
+              onCompleted={() => this.props.history.push('/sendCommand')}
             >
               {mutation => <button onClick={() => {
                 alert("Saved!");

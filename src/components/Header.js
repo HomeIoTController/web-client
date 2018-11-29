@@ -6,7 +6,7 @@ import { AUTH_TOKEN } from '../constants'
 class Header extends Component {
   render() {
     const authToken = localStorage.getItem(AUTH_TOKEN)
-    
+
     return (
       <div className="flex pa1 justify-between nowrap orange">
         <div className="flex flex-fixed black">
@@ -15,7 +15,11 @@ class Header extends Component {
             <div className="flex">
               <div className="ml1">|</div>
               <Link to="/commands" className="ml1 no-underline black">
-                commands
+                Commands List
+              </Link>
+              <div className="ml1">|</div>
+              <Link to="/sendCommand" className="ml1 no-underline black">
+                Send Command
               </Link>
             </div>
           )}
