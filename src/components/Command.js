@@ -4,31 +4,28 @@ import gql from 'graphql-tag'
 
 const COMMANDS_MUTATION = gql`
   mutation updateCommandsMutation($froms: [String]!, $tos: [String]!, $types: [String]!, $valuesFrom: [String]!, $valuesTo: [String]!, $listenerCommand: String!) {
-    updateCommands(froms: $froms, tos: $tos, types: $types, valuesFrom: $valuesFrom, valuesTo: $valuesTo, listenerCommand: $listenerCommand) {
-  		userId
-  		from
-  		to
-  	}
+    user {
+      updateCommands(froms: $froms, tos: $tos, types: $types, valuesFrom: $valuesFrom, valuesTo: $valuesTo, listenerCommand: $listenerCommand) {
+    		userId
+    		from
+    		to
+    	}
+    }
   }
 `
 
 const USER_QUERY = gql`
   query {
-    me {
+    user {
       listenerCommand
-    }
-  }
-`
-
-const COMMANDS_QUERY = gql`
-  query {
-    commands {
-      userId
-      from
-      to
-      valueTo
-      valueFrom
-      type
+      commands {
+        userId
+        from
+        to
+        valueTo
+        valueFrom
+        type
+      }
     }
   }
 `
@@ -60,19 +57,12 @@ class Command extends Component {
 
     this.setState({loading: true});
 
-    Promise.all([
-      this.props.client.query({
-        query: COMMANDS_QUERY,
-        fetchPolicy: 'no-cache',
-      }),
-      this.props.client.query({
-        query: USER_QUERY,
-        fetchPolicy: 'no-cache',
-      }),
-    ]).then(data => {
+    this.props.client.query({
+      query: USER_QUERY,
+      fetchPolicy: 'no-cache',
+    }).then(({ data: { user } }) => {
 
-      const dataCommands = data[0].data.commands;
-      const dataUser = data[1].data.me;
+      const dataCommands = user.commands;
       dataCommands.forEach(command => {
         froms.push(command.from);
         tos.push(command.to);
@@ -87,7 +77,7 @@ class Command extends Component {
         types,
         valuesFrom,
         valuesTo,
-        listenerCommand: dataUser.listenerCommand ? dataUser.listenerCommand : ""
+        listenerCommand: user.listenerCommand
       });
     }).catch(() => {
       this.setState({error: "Failed to load commands!"});

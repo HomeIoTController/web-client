@@ -4,19 +4,23 @@ import gql from 'graphql-tag'
 
 const COMMANDS_MUTATION = gql`
   mutation sendCommandsMutation($fromCommand: String!, $type: String!, $valueFrom: String, $valueTo: String) {
-    sendCommand(fromCommand: $fromCommand, type: $type, valueFrom: $valueFrom, valueTo: $valueTo)
+    user {
+      sendCommand(fromCommand: $fromCommand, type: $type, valueFrom: $valueFrom, valueTo: $valueTo)
+    }
   }
 `
 
 const COMMANDS_QUERY = gql`
   query {
-    commands {
-      userId
-      from
-      to
-      valueTo
-      valueFrom
-      type
+    user {
+      commands {
+        userId
+        from
+        to
+        valueTo
+        valueFrom
+        type
+      }
     }
   }
 `
@@ -40,9 +44,9 @@ class Command extends Component {
     this.props.client.query({
       query: COMMANDS_QUERY,
       fetchPolicy: 'no-cache'
-    }).then(res => {
+    }).then(({ data: {user} }) => {
 
-      const dataCommands = res.data.commands;
+      const dataCommands = user.commands;
       dataCommands.forEach(command => {
         froms.push(command.from);
         tos.push(command.to);
