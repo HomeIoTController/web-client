@@ -10,7 +10,7 @@ class Header extends Component {
     return (
       <div className="flex pa1 justify-between nowrap orange">
         <div className="flex flex-fixed black">
-          <div className="fw7 mr1">Home Control</div>
+          <div className="fw7 mr1">Home Controller</div>
           {authToken && (
             <div className="flex">
               <div className="ml1">|</div>
