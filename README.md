@@ -1,15 +1,10 @@
-# Light Control - Web app
+# Homer Controller - Web User Manager
 
-This is a web interface that communicated with a [GraphQL API](https://github.com/danielmapar/AdaptiveSoftwareDevelopment/tree/master/Project/api)
+This is a web app that communicated with the [graphql-api](https://github.com/HomeIoTController/graphql-api) in order to create users, register and trigger commands.
 
-## Running the App
+## Getting Started
 
-```sh
-npm install
-npm run start
-```
-
-You can now open your browser and use the app on `http://localhost:3001`.
+* To run this api just follow the steps on [compose](https://github.com/HomeIoTController/compose)
 
 ## List of available commands
 
