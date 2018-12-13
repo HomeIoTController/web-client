@@ -21,6 +21,10 @@ class Header extends Component {
               <Link to="/sendCommand" className="ml1 no-underline black">
                 Send Command
               </Link>
+              <div className="ml1">|</div>
+              <Link to="/pid" className="ml1 no-underline black">
+                PID Parameters
+              </Link>
             </div>
           )}
         </div>

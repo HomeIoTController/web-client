@@ -4,6 +4,7 @@ import Command from './Command'
 import SendCommand from './SendCommand'
 import Header from './Header'
 import Login from './Login'
+import PID from './PID'
 
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
             <Route exact path="/commands" component={Command} />
             <Route exact path="/sendCommand" component={SendCommand} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/pid" component={PID} />
           </Switch>
         </div>
       </div>
