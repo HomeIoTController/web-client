@@ -63,7 +63,10 @@ class Command extends Component {
         valuesTo
       });
     }).catch(() => {
-      this.setState({error: "Failed to load commands!"});
+      this.setState({
+        loading: false,
+        error: "Failed to load commands!"
+      });
     })
   }
 
@@ -74,8 +77,8 @@ class Command extends Component {
   render() {
     const { froms, tos, types, valuesFrom, valuesTo, loading, error } = this.state
 
-    if (loading) return <div>Fetching</div>
-    if (error) return <div>Error</div>
+    if (loading) return <div>Fetching...</div>
+    if (error) return <div>Error: {error}</div>
     if (froms.length === 0) return <div>Commands not registered!</div>
 
     return (<div>

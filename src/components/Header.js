@@ -15,7 +15,7 @@ class Header extends Component {
             <div className="flex">
               <div className="ml1">|</div>
               <Link to="/commands" className="ml1 no-underline black">
-                Commands List
+                Command List
               </Link>
               <div className="ml1">|</div>
               <Link to="/sendCommand" className="ml1 no-underline black">
@@ -23,7 +23,11 @@ class Header extends Component {
               </Link>
               <div className="ml1">|</div>
               <Link to="/pid" className="ml1 no-underline black">
-                PID Parameters
+                PID
+              </Link>
+              <div className="ml1">|</div>
+              <Link to="/states" className="ml1 no-underline black">
+                States
               </Link>
             </div>
           )}
@@ -42,7 +46,7 @@ class Header extends Component {
           ) : (
               <Link to="/login" className="ml1 no-underline black">
                 login
-            </Link>
+              </Link>
             )}
         </div>
       </div>

@@ -80,7 +80,10 @@ class Command extends Component {
         listenerCommand: user.listenerCommand
       });
     }).catch(() => {
-      this.setState({error: "Failed to load commands!"});
+      this.setState({
+        loading: false,
+        error: "Failed to load commands!"
+      });
     })
   }
 
@@ -162,8 +165,8 @@ class Command extends Component {
   render() {
     const { froms, tos, types, valuesFrom, valuesTo, listenerCommand, loading, error } = this.state
 
-    if (loading) return <div>Fetching</div>
-    if (error) return <div>Error</div>
+    if (loading) return <div>Fetching...</div>
+    if (error) return <div>Error: {error}</div>
 
     return (<div>
             Call command: <input
