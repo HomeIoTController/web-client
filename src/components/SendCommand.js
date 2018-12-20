@@ -92,8 +92,13 @@ class Command extends Component {
                 <span key={i}>
                   <div className="flex flex-column mt3">
                   <div><b>Command type</b>: {type}</div>
+                  {type !== 'webCommand' ?
                   <div><b>Command</b>: {from}</div>
-                  {type === 'bciCommand' ?
+                  : <span/>}
+                  {type === 'bciCommand' &&
+                   (from === "attention" ||
+                    from === "meditation" ||
+                    from === "blinking") ?
                   <span>
                     <div><b>From</b>: {valueFrom}</div>
                     <div><b>To</b>: {valueTo}</div>

@@ -18,6 +18,7 @@ const USER_QUERY = gql`
   query {
     user {
       listenerCommand
+      states
       commands {
         userId
         from
@@ -38,6 +39,7 @@ class Command extends Component {
     valuesFrom: [],
     valuesTo: [],
     listenerCommand: "",
+    states: [],
     loading: false,
     error: null
   }
@@ -63,6 +65,7 @@ class Command extends Component {
     }).then(({ data: { user } }) => {
 
       const dataCommands = user.commands;
+      const states = user.states;
       dataCommands.forEach(command => {
         froms.push(command.from);
         tos.push(command.to);
@@ -77,7 +80,8 @@ class Command extends Component {
         types,
         valuesFrom,
         valuesTo,
-        listenerCommand: user.listenerCommand
+        listenerCommand: user.listenerCommand,
+        states
       });
     }).catch(() => {
       this.setState({
@@ -99,7 +103,8 @@ class Command extends Component {
     valueFrom,
     valuesFrom,
     valueTo,
-    valuesTo
+    valuesTo,
+    states
   }) {
     if (type === "voiceCommand") {
       return (
@@ -127,33 +132,40 @@ class Command extends Component {
             <option value="attention">Attention</option>
             <option value="meditation">Meditation</option>
             <option value="blinking">Blinking</option>
+            <option disabled="disabled">----</option>
+            {states.map(state => <option value={state}>{state}</option>)}
           </select>
-          From: <input
-            className="mb2"
-            min="1"
-            max="100"
-            style={{width: "60px"}}
-            value={valueFrom}
-            onChange={e => {
-              valuesFrom[i] = e.target.value
-              this.setState({ valuesFrom })
-            }}
-            type="number"
-            placeholder="From"
-          />
-          To: <input
-            className="mb2"
-            min="1"
-            max="100"
-            style={{width: "60px"}}
-            value={valueTo}
-            onChange={e => {
-              valuesTo[i] = e.target.value
-              this.setState({ valuesTo })
-            }}
-            type="number"
-            placeholder="To"
-          />
+          {(from === "attention" ||
+            from === "meditation" ||
+            from === "blinking") ?
+            <span>
+              From: <input
+                className="mb2"
+                min="1"
+                max="100"
+                style={{width: "60px"}}
+                value={valueFrom}
+                onChange={e => {
+                  valuesFrom[i] = e.target.value
+                  this.setState({ valuesFrom })
+                }}
+                type="number"
+                placeholder="From"
+              />
+              To: <input
+                className="mb2"
+                min="1"
+                max="100"
+                style={{width: "60px"}}
+                value={valueTo}
+                onChange={e => {
+                  valuesTo[i] = e.target.value
+                  this.setState({ valuesTo })
+                }}
+                type="number"
+                placeholder="To"
+              />
+            </span> : <span/>}
         </div>
       );
     } else {
@@ -163,7 +175,7 @@ class Command extends Component {
   }
 
   render() {
-    const { froms, tos, types, valuesFrom, valuesTo, listenerCommand, loading, error } = this.state
+    const { froms, tos, types, valuesFrom, valuesTo, listenerCommand, states, loading, error } = this.state
 
     if (loading) return <div>Fetching...</div>
     if (error) return <div>Error: {error}</div>
@@ -187,7 +199,7 @@ class Command extends Component {
               Command type:
               <select value={type} onChange={e => {
                 types[i] = e.target.value
-                if (types[i] === "voiceCommand") {
+                if (types[i] === "voiceCommand" || types[i] === "guiCommand") {
                   froms[i] = "";
                 } else if (types[i] === "bciCommand") {
                   froms[i] = "attention";
@@ -198,6 +210,7 @@ class Command extends Component {
               }}>
                 <option value="voiceCommand">Voice command</option>
                 <option value="bciCommand">BCI command</option>
+                <option value="guiCommand">GUI command</option>
               </select>
 
               {this.renderCommandSection({
@@ -208,7 +221,8 @@ class Command extends Component {
                 valueFrom,
                 valuesFrom,
                 valueTo,
-                valuesTo
+                valuesTo,
+                states
               })}
               <a href="https://github.com/sqmk/huejay#clientgroupsgetall---get-all-groups"
                 target="_blank" // eslint-disable-line react/jsx-no-target-blank
