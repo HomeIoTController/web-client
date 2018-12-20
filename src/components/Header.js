@@ -22,12 +22,12 @@ class Header extends Component {
                 Send Command
               </Link>
               <div className="ml1">|</div>
-              <Link to="/pid" className="ml1 no-underline black">
-                PID
-              </Link>
-              <div className="ml1">|</div>
               <Link to="/states" className="ml1 no-underline black">
                 States
+              </Link>
+              <div className="ml1">|</div>
+              <Link to="/pid" className="ml1 no-underline black">
+                PID
               </Link>
             </div>
           )}
