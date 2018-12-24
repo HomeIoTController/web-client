@@ -106,7 +106,7 @@ class Command extends Component {
     valuesTo,
     states
   }) {
-    if (type === "voiceCommand") {
+    if (type === "voiceCommand" || type === "guiCommand") {
       return (
         <div>
         Command: <input
@@ -238,7 +238,7 @@ class Command extends Component {
                 type="text"
                 placeholder="Philips HUE command"
               />
-              <div>Example: <pre style={{display:"inline"}}>light.on = true; light.brightness = 200;</pre></div>
+              <div>Example: <pre style={{display:"inline"}}>light.on = true; light.incrementBrightness = 200;</pre></div>
               <button onClick={e => {
                 tos.splice(i, 1);
                 froms.splice(i, 1);

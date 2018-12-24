@@ -112,7 +112,7 @@ class PID extends Component {
                   placeholder="K"
                 />
                 <br />
-                Setpoint (from 0 to 100): <input
+                Setpoint: <input
                   className="mb2"
                   value={setpoint}
                   onChange={e => this.setState({ setpoint: e.target.value })}
