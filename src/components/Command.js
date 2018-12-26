@@ -3,9 +3,9 @@ import { withApollo, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
 const COMMANDS_MUTATION = gql`
-  mutation updateCommandsMutation($froms: [String]!, $tos: [String]!, $types: [String]!, $valuesFrom: [String]!, $valuesTo: [String]!, $listenerCommand: String!) {
+  mutation updateCommandsMutation($froms: [String]!, $tos: [String]!, $types: [String]!, $valuesFrom: [String]!, $valuesTo: [String]!, $listenerCommand: String!, $philipsHueIp: String!, $philipsHuePort: String!, $philipsHueUsername: String!) {
     user {
-      updateCommands(froms: $froms, tos: $tos, types: $types, valuesFrom: $valuesFrom, valuesTo: $valuesTo, listenerCommand: $listenerCommand) {
+      updateCommands(froms: $froms, tos: $tos, types: $types, valuesFrom: $valuesFrom, valuesTo: $valuesTo, listenerCommand: $listenerCommand, philipsHueIp: $philipsHueIp, philipsHuePort: $philipsHuePort, philipsHueUsername: $philipsHueUsername) {
     		userId
     		from
     		to
@@ -19,6 +19,11 @@ const USER_QUERY = gql`
     user {
       listenerCommand
       states
+      philipsHueConfig {
+        ip
+        username
+        port
+      }
       commands {
         userId
         from
@@ -40,6 +45,9 @@ class Command extends Component {
     valuesTo: [],
     listenerCommand: "",
     states: [],
+    philipsHueIp: "",
+    philipsHueUsername: "",
+    philipsHuePort: "",
     loading: false,
     error: null
   }
@@ -66,6 +74,15 @@ class Command extends Component {
 
       const dataCommands = user.commands;
       const states = user.states;
+      let { ip: philipsHueIp, port: philipsHuePort, username: philipsHueUsername } =
+        user.philipsHueConfig;
+
+      philipsHueIp = philipsHueIp ? philipsHueIp : "";
+      philipsHuePort = philipsHuePort ? philipsHuePort : "";
+      philipsHueUsername = philipsHueUsername ? philipsHueUsername : "";
+
+      const { listenerCommand } = user;
+
       dataCommands.forEach(command => {
         froms.push(command.from);
         tos.push(command.to);
@@ -80,8 +97,11 @@ class Command extends Component {
         types,
         valuesFrom,
         valuesTo,
-        listenerCommand: user.listenerCommand,
-        states
+        listenerCommand,
+        states,
+        philipsHueIp,
+        philipsHuePort,
+        philipsHueUsername
       });
     }).catch(() => {
       this.setState({
@@ -175,12 +195,16 @@ class Command extends Component {
   }
 
   render() {
-    const { froms, tos, types, valuesFrom, valuesTo, listenerCommand, states, loading, error } = this.state
+    const { froms, tos, types, valuesFrom, valuesTo,
+            listenerCommand, states, philipsHueIp, philipsHuePort, philipsHueUsername,
+            loading, error } = this.state
 
     if (loading) return <div>Fetching...</div>
     if (error) return <div>Error: {error}</div>
 
     return (<div>
+            <b>Base configuration</b>
+            <br /><br />
             Call command: <input
               className="mb2"
               value={listenerCommand}
@@ -188,7 +212,34 @@ class Command extends Component {
               type="text"
               placeholder="Call command"
             />
+            <br />
+            Philips HUE IP (ex: <b>192.168.1.38</b>): <input
+              className="mb2"
+              value={philipsHueIp}
+              onChange={e => this.setState({ philipsHueIp: e.target.value })}
+              type="text"
+              placeholder="Philips HUE IP"
+            />
+            <br />
+            Philips HUE Port: <input
+              className="mb2"
+              value={philipsHuePort}
+              onChange={e => this.setState({ philipsHuePort: e.target.value })}
+              type="text"
+              placeholder="Philips HUE Port"
+            />
+            <br />
+            Philips HUE Username: <input
+              className="mb2"
+              value={philipsHueUsername}
+              onChange={e => this.setState({ philipsHueUsername: e.target.value })}
+              type="text"
+              placeholder="Philips HUE Username"
+            />
+            <br />
             <hr />
+            <b>Commands</b>
+            <br />
             {froms.map((from, i) => {
             const to = tos[i];
             const type = types[i];
@@ -256,11 +307,12 @@ class Command extends Component {
 
             <Mutation
               mutation={COMMANDS_MUTATION}
-              variables={{ froms, tos, types, valuesFrom, valuesTo, listenerCommand }}
+              variables={{ froms, tos, types, valuesFrom, valuesTo,
+                 listenerCommand, philipsHueIp, philipsHuePort, philipsHueUsername }}
               onCompleted={() => this.props.history.push('/sendCommand')}
             >
               {mutation => <button onClick={() => {
-                alert("Saved!");
+                alert("Please click your sync Philips HUE bridge button continuously!");
                 mutation();
               }}>Save</button>}
             </Mutation>
